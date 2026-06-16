@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+
+.container{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.login-card{
+    width:420px;
+    padding:40px;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:16px;
+    border-radius:16px;
+    border:1px solid #ddd;
+}
+
+button{
+    width:100%;
+    margin-top:20px;
+    padding:16px;
+    background:#7C5CFC;
+    color:white;
+    border-radius:16px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="login-card card">
+
+<h1>Login</h1>
+
+<input
+id="token"
+placeholder="Enter Token">
+
+<button onclick="login()">
+Continue
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+function login(){
+
+    let token =
+        document.getElementById("token").value;
+
+    localStorage.setItem(
+        "token",
+        token
+    );
+
+    window.location =
+        "dashboard.html";
+
+}
+
+</script>
+
+</body>
+</html>
