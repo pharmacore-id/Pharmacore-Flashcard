@@ -3,22 +3,23 @@
 <head>
 
 <meta charset="UTF-8">
-
-<title>Dashboard</title>
+<title>PharmaCore Recall</title>
 
 <link rel="stylesheet" href="css/style.css">
+<script src="js/config.js"></script>
 
 <style>
 
 .layout{
     display:flex;
+    min-height:100vh;
 }
 
 .sidebar{
     width:260px;
-    height:100vh;
     background:white;
     padding:30px;
+    border-right:1px solid #eee;
 }
 
 .logo{
@@ -35,47 +36,72 @@
 }
 
 .menu div{
-    margin-bottom:15px;
     padding:14px;
+    margin-bottom:10px;
     border-radius:14px;
+    cursor:pointer;
 }
 
-.active{
-    background:#EAF8EE;
+.menu .active{
+    background:#EEF2FF;
+    color:#7C5CFC;
+    font-weight:600;
 }
 
 .main{
     flex:1;
-    padding:30px;
-}
-
-.hero{
-    background:#EAF8EE;
-    border-radius:24px;
     padding:40px;
 }
 
-.stats{
-    margin-top:20px;
+.welcome{
+    background:linear-gradient(
+      135deg,
+      #EEF2FF,
+      #EAF8EE
+    );
+
+    padding:30px;
+    border-radius:24px;
+    margin-bottom:40px;
+}
+
+.welcome h1{
+    margin-bottom:10px;
+}
+
+.topic-section{
+    margin-bottom:50px;
+}
+
+.topic-title{
+    font-size:34px;
+    font-weight:800;
+    color:#5B6CFF;
+    margin-bottom:20px;
+}
+
+.subtopics{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:20px;
+    grid-template-columns:
+      repeat(auto-fill,minmax(220px,1fr));
+    gap:15px;
 }
 
-.stat{
-    padding:25px;
+.subtopic-card{
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:0 6px 20px rgba(0,0,0,.05);
+    cursor:pointer;
+    transition:.2s;
 }
 
-.stat h2{
-    margin-top:10px;
+.subtopic-card:hover{
+    transform:translateY(-3px);
 }
 
-.start{
-    margin-top:20px;
-    background:#7C5CFC;
-    color:white;
-    padding:16px 24px;
-    border-radius:16px;
+.subtopic-name{
+    font-weight:600;
 }
 
 </style>
@@ -86,84 +112,158 @@
 
 <div class="layout">
 
-<div class="sidebar">
+    <div class="sidebar">
 
-<div class="logo">
-PharmaCore
-<span>Recall</span>
-</div>
+        <div class="logo">
+            PharmaCore
+            <span>Recall</span>
+        </div>
 
-<div class="menu">
+        <div class="menu">
 
-<div class="active">
-Dashboard
-</div>
+            <div class="active">
+                Dashboard
+            </div>
 
-<div>
-Flashcards
-</div>
+            <div>
+                Flashcards
+            </div>
 
-<div>
-CBT
-</div>
+            <div>
+                CBT
+            </div>
 
-<div>
-Analytics
-</div>
+            <div>
+                Analytics
+            </div>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
-<div class="main">
+    <div class="main">
 
-<div class="hero">
+        <div class="welcome">
+            <h1>Welcome Back 👋</h1>
+            <p>
+                Continue your UKMPPAI preparation today.
+            </p>
+        </div>
 
-<h1>
-Welcome Back 👋
-</h1>
+        <div id="topicsContainer">
 
-<p>
-Ready to master UKMPPAI?
-</p>
+            Loading topics...
 
-<button
-class="start"
-onclick="location.href='review.html'">
+        </div>
 
-Start Review
-
-</button>
+    </div>
 
 </div>
 
-<div class="stats">
+<script>
 
-<div class="card stat">
-Cards Due
-<h2>32</h2>
-</div>
+async function loadTopics(){
 
-<div class="card stat">
-Mastery
-<h2>67%</h2>
-</div>
+    try{
 
-<div class="card stat">
-Streak
-<h2>7 Days</h2>
-</div>
+        const res =
+            await fetch(
+                API_URL + "?action=getTopics"
+            );
 
-<div class="card stat">
-Total Cards
-<h2>1248</h2>
-</div>
+        const data =
+            await res.json();
 
-</div>
+        const container =
+            document.getElementById(
+                "topicsContainer"
+            );
 
-</div>
+        container.innerHTML = "";
 
-</div>
+        data.topics.forEach(topic=>{
+
+            const section =
+                document.createElement("div");
+
+            section.className =
+                "topic-section";
+
+            let html = `
+
+                <div class="topic-title">
+                    ${topic.mainTopic}
+                </div>
+
+                <div class="subtopics">
+
+            `;
+
+            topic.subTopics.forEach(sub=>{
+
+                html += `
+
+                    <div
+                        class="subtopic-card"
+                        onclick="
+                            startReview(
+                                '${topic.mainTopic}',
+                                '${sub}'
+                            )
+                        "
+                    >
+
+                        <div class="subtopic-name">
+                            ${sub}
+                        </div>
+
+                    </div>
+
+                `;
+
+            });
+
+            html += "</div>";
+
+            section.innerHTML = html;
+
+            container.appendChild(
+                section
+            );
+
+        });
+
+    }catch(err){
+
+        console.error(err);
+
+    }
+
+}
+
+function startReview(
+    mainTopic,
+    subTopic
+){
+
+    localStorage.setItem(
+        "mainTopic",
+        mainTopic
+    );
+
+    localStorage.setItem(
+        "subTopic",
+        subTopic
+    );
+
+    location.href =
+        "review.html";
+
+}
+
+loadTopics();
+
+</script>
 
 </body>
 </html>
