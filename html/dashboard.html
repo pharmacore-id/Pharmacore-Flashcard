@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+
+<title>Dashboard</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+
+.layout{
+    display:flex;
+}
+
+.sidebar{
+    width:260px;
+    height:100vh;
+    background:white;
+    padding:30px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#7C5CFC;
+}
+
+.menu{
+    margin-top:40px;
+}
+
+.menu div{
+    margin-bottom:15px;
+    padding:14px;
+    border-radius:14px;
+}
+
+.active{
+    background:#EAF8EE;
+}
+
+.main{
+    flex:1;
+    padding:30px;
+}
+
+.hero{
+    background:#EAF8EE;
+    border-radius:24px;
+    padding:40px;
+}
+
+.stats{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.stat{
+    padding:25px;
+}
+
+.stat h2{
+    margin-top:10px;
+}
+
+.start{
+    margin-top:20px;
+    background:#7C5CFC;
+    color:white;
+    padding:16px 24px;
+    border-radius:16px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+<div class="sidebar">
+
+<div class="logo">
+PharmaCore
+<span>Recall</span>
+</div>
+
+<div class="menu">
+
+<div class="active">
+Dashboard
+</div>
+
+<div>
+Flashcards
+</div>
+
+<div>
+CBT
+</div>
+
+<div>
+Analytics
+</div>
+
+</div>
+
+</div>
+
+<div class="main">
+
+<div class="hero">
+
+<h1>
+Welcome Back 👋
+</h1>
+
+<p>
+Ready to master UKMPPAI?
+</p>
+
+<button
+class="start"
+onclick="location.href='review.html'">
+
+Start Review
+
+</button>
+
+</div>
+
+<div class="stats">
+
+<div class="card stat">
+Cards Due
+<h2>32</h2>
+</div>
+
+<div class="card stat">
+Mastery
+<h2>67%</h2>
+</div>
+
+<div class="card stat">
+Streak
+<h2>7 Days</h2>
+</div>
+
+<div class="card stat">
+Total Cards
+<h2>1248</h2>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
