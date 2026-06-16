@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>PharmaCore Recall</title>
+
+<link rel="stylesheet" href="css/style.css">
+<script src="js/config.js"></script>
+
+<style>
+
+.layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:260px;
+    background:white;
+    padding:30px;
+    border-right:1px solid #eee;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#7C5CFC;
+}
+
+.menu{
+    margin-top:40px;
+}
+
+.menu div{
+    padding:14px;
+    margin-bottom:10px;
+    border-radius:14px;
+    cursor:pointer;
+}
+
+.menu .active{
+    background:#EEF2FF;
+    color:#7C5CFC;
+    font-weight:600;
+}
+
+.main{
+    flex:1;
+    padding:40px;
+}
+
+.welcome{
+    background:linear-gradient(
+      135deg,
+      #EEF2FF,
+      #EAF8EE
+    );
+
+    padding:30px;
+    border-radius:24px;
+    margin-bottom:40px;
+}
+
+.welcome h1{
+    margin-bottom:10px;
+}
+
+.topic-section{
+    margin-bottom:50px;
+}
+
+.topic-title{
+    font-size:34px;
+    font-weight:800;
+    color:#5B6CFF;
+    margin-bottom:20px;
+}
+
+.subtopics{
+    display:grid;
+    grid-template-columns:
+      repeat(auto-fill,minmax(220px,1fr));
+    gap:15px;
+}
+
+.subtopic-card{
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:0 6px 20px rgba(0,0,0,.05);
+    cursor:pointer;
+    transition:.2s;
+}
+
+.subtopic-card:hover{
+    transform:translateY(-3px);
+}
+
+.subtopic-name{
+    font-weight:600;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <div class="sidebar">
+
+        <div class="logo">
+            PharmaCore
+            <span>Recall</span>
+        </div>
+
+        <div class="menu">
+
+            <div class="active">
+                Dashboard
+            </div>
+
+            <div>
+                Flashcards
+            </div>
+
+            <div>
+                CBT
+            </div>
+
+            <div>
+                Analytics
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="main">
+
+        <div class="welcome">
+            <h1>Welcome Back 👋</h1>
+            <p>
+                Continue your UKMPPAI preparation today.
+            </p>
+        </div>
+
+        <div id="topicsContainer">
+
+            Loading topics...
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+async function loadTopics(){
+
+    try{
+
+        const res =
+            await fetch(
+                API_URL + "?action=getTopics"
+            );
+
+        const data =
+            await res.json();
+
+        const container =
+            document.getElementById(
+                "topicsContainer"
+            );
+
+        container.innerHTML = "";
+
+        data.topics.forEach(topic=>{
+
+            const section =
+                document.createElement("div");
+
+            section.className =
+                "topic-section";
+
+            let html = `
+
+                <div class="topic-title">
+                    ${topic.mainTopic}
+                </div>
+
+                <div class="subtopics">
+
+            `;
+
+            topic.subTopics.forEach(sub=>{
+
+                html += `
+
+                    <div
+                        class="subtopic-card"
+                        onclick="
+                            startReview(
+                                '${topic.mainTopic}',
+                                '${sub}'
+                            )
+                        "
+                    >
+
+                        <div class="subtopic-name">
+                            ${sub}
+                        </div>
+
+                    </div>
+
+                `;
+
+            });
+
+            html += "</div>";
+
+            section.innerHTML = html;
+
+            container.appendChild(
+                section
+            );
+
+        });
+
+    }catch(err){
+
+        console.error(err);
+
+    }
+
+}
+
+function startReview(
+    mainTopic,
+    subTopic
+){
+
+    localStorage.setItem(
+        "mainTopic",
+        mainTopic
+    );
+
+    localStorage.setItem(
+        "subTopic",
+        subTopic
+    );
+
+    location.href =
+        "review.html";
+
+}
+
+loadTopics();
+
+</script>
+
+</body>
+</html>
